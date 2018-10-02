@@ -1,0 +1,21 @@
+2018-05-03 10:51:49.542057
+
+task: subj
+prec. 0	rec. 0	F-sc. 0	prec. 1	rec. 1	F-sc. 1	F-sc.
+0.6440	0.7496	0.6928	0.8539	0.7793	0.8149	0.7539
+
+task: opos
+prec. 0	rec. 0	F-sc. 0	prec. 1	rec. 1	F-sc. 1	F-sc.
+0.8776	0.9266	0.9014	0.5346	0.3949	0.4542	0.6778
+
+task: oneg
+prec. 0	rec. 0	F-sc. 0	prec. 1	rec. 1	F-sc. 1	F-sc.
+0.7449	0.8667	0.8012	0.7118	0.5260	0.6049	0.7031
+
+task: iro
+prec. 0	rec. 0	F-sc. 0	prec. 1	rec. 1	F-sc. 1	F-sc.
+0.8823	0.9938	0.9347	0.0833	0.0043	0.0081	0.4714
+
+task: polarity
+Combined F-score
+0.6904

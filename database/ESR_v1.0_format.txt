@@ -1,0 +1,21 @@
+Emoji_Sentiment_Data is used to produce the Emoji_Sentiment_Ranking
+web page at http://kt.ijs.si/data/Emoji_sentiment_ranking/ .
+
+The data is in the form of a CSV table, with the following columns:
+
+Emoji character (encoded in UTF-8),
+Unicode codepoint,
+No. of occurrences [1..max],
+Position in tweets [0..1],
+No. of occurrences in negative tweets,
+No. of occurrences in neutral tweets,
+No. of occurrences in positive tweets,
+Unicode name,
+Unicode block.
+
+Note that the first column, Emoji, is a Unicode character which might
+not be properly rendered in all operating systems and client software.
+
+Emojitracker data was fetched from the website http://emojitracker.com/ ,
+on June 4, 2015. The data is also in the form of a CSV table,
+and contains just the first three columns above.
