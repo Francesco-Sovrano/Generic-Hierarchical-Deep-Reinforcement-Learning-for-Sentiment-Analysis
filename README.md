@@ -1,4 +1,4 @@
-Deep Reinforcement Learning for Sentiment Analysis with (partitioned) A3C
+Generic Hierarchical Deep Reinforcement Learning for Sentiment Analysis
 ==========
   
 This software is a fork of:
