@@ -25,8 +25,8 @@ if [ ! -d "treetagger" ]; then
 	wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tree-tagger-linux-3.2.1.tar.gz
 	wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tagger-scripts.tar.gz
 	wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/install-tagger.sh
-	wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/italian-par-linux-3.2-utf8.bin.gz
-	wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/english-par-linux-3.2-utf8.bin.gz
+	wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/italian.par.gz
+	wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/english.par.gz
 	chmod -R 700 ./
 	./install-tagger.sh
 	cd ..
