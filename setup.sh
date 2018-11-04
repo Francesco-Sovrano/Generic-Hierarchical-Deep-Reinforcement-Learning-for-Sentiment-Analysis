@@ -11,13 +11,18 @@ fi
 . .env2/bin/activate
 pip install pip==9.0.3 # pip 10.0.1 has issues with pybind11 -> required by fastText
 pip install tensorflow==1.8.0 numpy==1.14.3 scipy==1.1.0
-pip install googletrans==2.2.0 gensim==3.4.0 validate_email==1.3
+pip install gensim==3.4.0 validate_email==1.3
 pip install nltk==3.2.5 treetaggerwrapper==2.2.4 cython==0.28.2 git+https://github.com/facebookresearch/fastText.git@3e64bf0f5b916532b34be6706c161d7d0a4957a4 # the Moses tokenizer has been removed from nltk 3.3.0!
 pip install emojipy==3.0.5 # https://github.com/emojione/emojione/tree/master/lib/python
 # pip install lxml git+https://github.com/opener-project/VU-sentiment-lexicon.git # this version of VU-sentiment-lexicon is for python2 only
 pip install lxml==4.2.1 git+https://github.com/Francesco-Sovrano/VU-sentiment-lexicon.git
 
 cd ./.env2
+# install googletrans: https://stackoverflow.com/questions/52455774/googletrans-stopped-working-with-error-nonetype-object-has-no-attribute-group
+git clone https://github.com/BoseCorp/py-googletrans.git
+cd ./py-googletrans
+python setup.py install
+cd ..
 # install treetagger
 if [ ! -d "treetagger" ]; then
 	cp -r ../database/treetagger ./treetagger
