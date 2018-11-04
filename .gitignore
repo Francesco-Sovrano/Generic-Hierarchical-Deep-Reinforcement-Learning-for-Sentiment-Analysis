@@ -2,4 +2,3 @@ __pycache__/
 *.o
 *.pyc
 *.bak
-*.pkl

@@ -19,6 +19,10 @@ def build():
 	tf.app.flags.DEFINE_string("training_set_path", "./database/training_set_sentipolc16.csv", "training set")
 	tf.app.flags.DEFINE_string("emoji_sentiment_lexicon", "./database/Emoji_Sentiment_Data_v1.0.csv", "emoji sentiment lexicon")
 	tf.app.flags.DEFINE_string("preprocessed_dict", "./database/preprocessed", "vectorized training set")
+	tf.app.flags.DEFINE_string("translated_lemma_tokens", "./database/translated_lemma_tokens", "cache of translated lemma tokens") # dictionary with translated lemma tokens
+	tf.app.flags.DEFINE_string("lexeme_sentiment_dict", "./database/lexeme_sentiment_dict", "cache of lexeme_sentiment") # lexeme sentiment dictionary
+	tf.app.flags.DEFINE_string("test_annotations", "./database/test_annotations", "cache of test_annotations")
+	tf.app.flags.DEFINE_string("training_annotations", "./database/training_annotations", "cache of training_annotations")
 	
 	tf.app.flags.DEFINE_string("tagger_path", "./.env2/treetagger", "tagger path")
 	tf.app.flags.DEFINE_string("nltk_data", './.env2/nltk_data', "nltk data")

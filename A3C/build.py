@@ -60,15 +60,27 @@ class SentiPolC(object):
 		self.emoji = self.get_emoji_sentiment_lexicon(flags.emoji_sentiment_lexicon)
 		print ("Emoji sentiment lexicon loaded")
 		self.translator = Translator()
+		print ("Setting up support dictionaries")
+		self.translated_lemma_tokens = self.load_obj(flags.translated_lemma_tokens)
+		self.lexeme_sentiment_dict = self.load_obj(flags.lexeme_sentiment_dict)
 		print ("Translator loaded")
 		# Build test annotations
 		print ("Building test annotations..")
-		test_set = self.get_annotations(flags.test_set_path)
+		test_set = self.load_obj(flags.test_annotations)
+		if not test_set:
+			test_set = self.get_annotations(flags.test_set_path)
+			self.save_obj(test_set, flags.test_annotations)
 		print ("Test annotations built")
 		# Build training annotations
 		print ("Building training annotations..")
-		training_set = self.get_annotations(flags.training_set_path)
+		training_set = self.load_obj(flags.training_annotations)
+		if not training_set:
+			training_set = self.get_annotations(flags.training_set_path)
+			self.save_obj(training_set, flags.training_annotations)
 		print ("Training annotations built")
+		print ("Saving support dictionaries")
+		self.save_obj(self.translated_lemma_tokens, flags.translated_lemma_tokens)
+		self.save_obj(self.lexeme_sentiment_dict, flags.lexeme_sentiment_dict)
 		# Build distributional docvec from training and test sets
 		self.doc2vec = self.build_distributional_docvec([test_set, training_set])
 		print ("Doc2Vec built")
@@ -86,7 +98,7 @@ class SentiPolC(object):
 		print ("Wordvecs added to training annotations")
 		# Save to npy
 		self.free_ram()
-		self.save_obj( {"test_set":test_set, "training_set":training_set}, flags.preprocessed_dict+'.pkl' )
+		self.save_obj({"test_set":test_set, "training_set":training_set}, flags.preprocessed_dict)
 		
 	def free_ram(self):
 		self.tweet_tokenizer = None
@@ -98,13 +110,24 @@ class SentiPolC(object):
 		self.emoji = None
 		self.translator = None
 		self.doc2vec = None
+		self.translated_lemma_tokens = None
 		gc.collect()
 		
 	def save_obj(self, obj, path):
-		print ("Saving pre-processed sets..")
+		path += '.pkl'
+		print ("Saving " + path)
 		with open(path, 'wb') as f:
 			pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
-		print ("Saved to " + path)
+		print (path + " saved")
+		
+	def load_obj(self, path):
+		path += '.pkl'
+		if not os.path.isfile(path):
+			return {}
+		print ("Loading " + path)
+		with open(path, 'rb') as f:
+			return pickle.load(f)
+		print (path + " loaded")
 		
 	# build a distributional polarity lexicon for emojis using http://kt.ijs.si/data/Emoji_sentiment_ranking/
 	def get_emoji_sentiment_lexicon(self, path):
@@ -239,28 +262,39 @@ class SentiPolC(object):
 		return lexeme_sentiment
 		
 	def get_SentiWordNet_sentiment(self, lemma, pos):
+		if lemma not in self.translated_lemma_tokens:
+			en_lemma = ""
+			while en_lemma=="": # workaround to handle google translator limitations
+				try:
+					en_lemma = self.translator.translate(lemma, dest='en', src='it').text
+				except:
+					traceback.print_exc()
+					self.translator = Translator() # reset translator
+					# time.sleep(random.uniform(0.01, 0.1))
+					time.sleep(random.uniform(0.5, 1.5))
+			en_lemma_tokens = self.tweet_tokenizer.tokenize(en_lemma)
+			self.translated_lemma_tokens[lemma] = en_lemma_tokens
+		else:
+			en_lemma_tokens = self.translated_lemma_tokens[lemma]
+		# print("EN: {}".format(en_lemma_tokens))
 		wordnet_pos = self.get_WordNet_pos(pos)
-		en_lemma = ""
-		while en_lemma=="": # workaround to handle google translator limitations
-			try:
-				en_lemma = self.translator.translate(lemma, dest='en', src='it').text
-			except:
-				self.translator = Translator() # reset translator
-				time.sleep(random.uniform(0.5, 1.5))
-		# print("EN: " + en_lemma)
-		lexeme_sentiment = {}
-		en_lemma_tokens = self.tweet_tokenizer.tokenize(en_lemma)
-		for en_token in en_lemma_tokens:
-			if en_token:
-				en_synsets = wn.synsets(en_token, pos=wordnet_pos)
-				id = 0
-				for syn in en_synsets:
-					name = syn.name()
-					senti_synset = swn.senti_synset(name) # this is a naive solution -> do you want to improve it? you need for something like Lesk algorithm for word disambiguation
-					negativity = senti_synset.neg_score()
-					positivity = senti_synset.pos_score()
-					lexeme_sentiment[str(id)] = { "synset":name, "negativity":negativity, "positivity":positivity }
-					id+=1
+		lex_key = "{}_{}".format(lemma,wordnet_pos)
+		if lex_key not in self.lexeme_sentiment_dict:
+			lexeme_sentiment = {}
+			for en_token in en_lemma_tokens:
+				if en_token:
+					en_synsets = wn.synsets(en_token, pos=wordnet_pos)
+					id = 0
+					for syn in en_synsets:
+						name = syn.name()
+						senti_synset = swn.senti_synset(name) # this is a naive solution -> do you want to improve it? you need for something like Lesk algorithm for word disambiguation
+						negativity = senti_synset.neg_score()
+						positivity = senti_synset.pos_score()
+						lexeme_sentiment[str(id)] = { "synset":name, "negativity":negativity, "positivity":positivity }
+						id+=1
+			self.lexeme_sentiment_dict[lex_key] = lexeme_sentiment
+		else:
+			lexeme_sentiment = self.lexeme_sentiment_dict[lex_key]
 		return lexeme_sentiment
 		
 	def tokenize(self, text):
