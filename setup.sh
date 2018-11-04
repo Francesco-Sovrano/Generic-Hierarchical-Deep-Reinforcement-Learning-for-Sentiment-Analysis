@@ -29,6 +29,16 @@ if [ ! -d "treetagger" ]; then
 	wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/english.par.gz
 	chmod -R 700 ./
 	./install-tagger.sh
+	if [ -r italian.par.gz ]
+	then
+		gzip -cd italian.par.gz > lib/italian-utf8.par
+		echo 'Italian parameter file re-installed.'
+	fi
+	if [ -r english.par.gz ]
+	then
+		gzip -cd english.par.gz > lib/english-utf8.par
+		echo 'English parameter file re-installed.'
+	fi
 	cd ..
 fi
 # Download pre-trained word vectors from fasttext repository
