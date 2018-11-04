@@ -20,13 +20,14 @@ pip install lxml==4.2.1 git+https://github.com/Francesco-Sovrano/VU-sentiment-le
 cd ./.env2
 # install treetagger
 if [ ! -d "treetagger" ]; then
-	mkdir treetagger
+	cp -r ../database/treetagger ./treetagger
+	# mkdir treetagger
 	cd ./treetagger
-	wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tree-tagger-linux-3.2.1.tar.gz
-	wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tagger-scripts.tar.gz
-	wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/install-tagger.sh
-	wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/italian.par.gz
-	wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/english.par.gz
+	# wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tree-tagger-linux-3.2.1.tar.gz
+	# wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tagger-scripts.tar.gz
+	# wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/install-tagger.sh
+	# wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/italian.par.gz
+	# wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/english.par.gz
 	chmod -R 700 ./
 	./install-tagger.sh
 	if [ -r italian.par.gz ]
