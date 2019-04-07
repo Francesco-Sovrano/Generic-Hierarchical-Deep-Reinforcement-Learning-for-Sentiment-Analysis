@@ -51,7 +51,7 @@ fi
 if [ ! -d "word2vec" ]; then
 	mkdir word2vec
 	cd ./word2vec
-	wget https://s3-us-west-1.amazonaws.com/fasttext-vectors/word-vectors-v2/cc.it.300.bin.gz
+	wget https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.it.300.bin.gz
 	gunzip cc.it.300.bin.gz
 	cd ..
 fi

@@ -1,5 +1,7 @@
 Generic Hierarchical Deep Reinforcement Learning for Sentiment Analysis
 ==========
+
+The goal of this project is to experiment Hierarchical Reinforcement Learning applied to Sentiment Analysis. More details can be found in my Computer Science master thesis: [Deep Reinforcement Learning and sub-problem decomposition using Hierarchical Architectures in partially observable environments](https://amslaurea.unibo.it/16718/). 
   
 This software is a fork of:
 * [Miyosuda's UNREAL implementation](https://github.com/miyosuda/unreal)
